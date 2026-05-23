@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kube Woodworks — Crofton, Nebraska</title>
+  <meta name="description" content="Custom heirloom woodworking by Dave Kube. Handcrafted furniture and one-of-a-kind pieces made in Crofton, Nebraska.">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/k-mark-512.png">
+  <link rel="apple-touch-icon" href="assets/k-mark-512.png">
+  <link rel="manifest" href="assets/site.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="site-nav" aria-label="Site navigation">
+    <a class="nav-home" href="index.html" aria-label="Kube Woodworks home">
+      <img src="assets/k-mark-512.png" alt="">
+      <span class="nav-wordmark">Kube Woodworks</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Gallery ── -->
+  <main class="gallery-stage" id="gallery">
+
+    <!-- ============================================================
+         HOW TO ADD A NEW PIECE
+         ============================================================
+         1. Take your photos and drop them in the /images/ folder.
+            Name the file something like "walnut-coffee-table.jpg".
+
+         2. Copy EVERYTHING between "BEGIN PIECE" and "END PIECE"
+            (including those comment lines).
+
+         3. Paste the copy right BEFORE the last "END PIECE" comment
+            — so it appears after the previous piece, not after the
+            closing </main> tag.
+
+         4. Update the following in your pasted block:
+              - The "No. 001" → next number (002, 003, …)
+              - piece-title text
+              - piece-meta values (Wood, Dimensions, Finish, Year)
+              - piece-description text
+              - The <img> tag: swap the placeholder div for a real
+                <img src="images/your-file.jpg" alt="brief description">
+              - Availability: see the comment inside for how to
+                toggle between Available and Not available.
+
+         Dave — you never need to touch anything outside these blocks.
+         ============================================================ -->
+
+    <!-- BEGIN PIECE -->
+    <article class="piece" data-piece aria-label="Piece 1">
+      <div class="piece-photo">
+        <!--
+          PHOTO: Replace this placeholder block with your image when ready:
+
+          <img src="images/your-photo-filename.jpg"
+               alt="Short description of the piece — e.g. Walnut end table with dovetail joinery">
+
+          The photo will fill this panel automatically. Portrait or landscape both work.
+        -->
+        <div class="piece-photo-placeholder" aria-hidden="true">
+          <img src="assets/k-mark-512.png" alt="">
+          <p>Photo coming soon</p>
+        </div>
+      </div>
+      <div class="piece-placard">
+        <p class="piece-number">No. 001</p>
+        <h1 class="piece-title">Walnut End Table</h1>
+        <dl class="piece-meta">
+          <dt>Wood</dt>        <dd>Black Walnut</dd>
+          <dt>Dimensions</dt>  <dd>24&Prime; &times; 18&Prime; &times; 24&Prime;</dd>
+          <dt>Finish</dt>      <dd>Rubio Monocoat</dd>
+          <dt>Year</dt>        <dd>2025</dd>
+        </dl>
+        <p class="piece-description">
+          Solid walnut end table with hand-cut dovetail joinery at the apron corners
+          and a single lower shelf in figured maple. Built to be used every day
+          and handed down.
+        </p>
+        <div class="piece-availability">
+          <!--
+            AVAILABLE: use this block when the piece is for sale
+          -->
+          <span class="avail-badge available">Available</span>
+          <p class="avail-message">
+            Ready for local pickup in Crofton, NE.
+            Cash, check, or Venmo. No shipping — regional sales only.
+          </p>
+          <a href="contact.html" class="btn">Contact Dave to arrange &rarr;</a>
+
+          <!--
+            NOT AVAILABLE: swap to this block when a piece is sold
+            (remove the three lines above and uncomment the three below)
+
+          <span class="avail-badge unavailable">Not available</span>
+          <p class="avail-message">
+            Not currently in stock — contact Dave for an estimate on when
+            a similar piece could be ready.
+          </p>
+          <a href="contact.html" class="btn">Inquire &rarr;</a>
+          -->
+        </div>
+      </div>
+    </article>
+    <!-- END PIECE -->
+
+    <!-- Gallery navigation controls -->
+    <div class="gallery-controls" aria-label="Gallery navigation">
+      <button class="gallery-btn" id="prev-btn" aria-label="Previous piece" disabled>&#8592;</button>
+      <span class="gallery-counter" aria-live="polite">
+        <span id="count-current">1</span>&thinsp;/&thinsp;<span id="count-total">1</span>
+      </span>
+      <button class="gallery-btn" id="next-btn" aria-label="Next piece" disabled>&#8594;</button>
+    </div>
+
+  </main>
+
+  <script>
+    (function () {
+      const pieces  = Array.from(document.querySelectorAll('[data-piece]'));
+      const btnPrev = document.getElementById('prev-btn');
+      const btnNext = document.getElementById('next-btn');
+      const numCur  = document.getElementById('count-current');
+      const numTot  = document.getElementById('count-total');
+      let current   = 0;
+
+      numTot.textContent = pieces.length;
+
+      function show(idx) {
+        pieces[current].classList.remove('active');
+        current = idx;
+        pieces[current].classList.add('active');
+        numCur.textContent   = current + 1;
+        btnPrev.disabled     = current === 0;
+        btnNext.disabled     = current === pieces.length - 1;
+        // Scroll placard back to top on each new piece
+        const placard = pieces[current].querySelector('.piece-placard');
+        if (placard) placard.scrollTop = 0;
+      }
+
+      // Initialise first piece
+      pieces[0].classList.add('active');
+      btnPrev.disabled = true;
+      btnNext.disabled = pieces.length < 2;
+
+      btnPrev.addEventListener('click', function () { if (current > 0) show(current - 1); });
+      btnNext.addEventListener('click', function () { if (current < pieces.length - 1) show(current + 1); });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft'  && current > 0)                show(current - 1);
+        if (e.key === 'ArrowRight' && current < pieces.length - 1) show(current + 1);
+      });
+
+      // Touch / swipe
+      var touchStartX = 0;
+      document.addEventListener('touchstart', function (e) {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+      document.addEventListener('touchend', function (e) {
+        var dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 48) {
+          if (dx < 0 && current < pieces.length - 1) show(current + 1);
+          if (dx > 0 && current > 0)                 show(current - 1);
+        }
+      }, { passive: true });
+    }());
+  </script>
+
+</body>
+</html>
