@@ -1,0 +1,16 @@
+{
+  "name": "Kube Woodworks",
+  "short_name": "Kube Woodworks",
+  "description": "Custom heirloom woodworking by Dave Kube — Crofton, Nebraska",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#1a0e07",
+  "theme_color": "#1a0e07",
+  "icons": [
+    {
+      "src": "k-mark-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
