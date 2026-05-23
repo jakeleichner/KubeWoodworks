@@ -68,8 +68,6 @@ Anywhere these appear in code, they are intentional placeholders awaiting real i
 
 The brand mark is a **letter "K" made from two woods joined by a dovetail joint** — maple (light) body, walnut (dark) frame, with three dovetail tails on the left stem. It directly references fine woodworking craftsmanship and the "K" in Kube.
 
-> **NOTE on the business name:** The logo art currently reads **"KUBE CREATIONS"** (the earlier working name). The business name has since been finalized as **"Kube Woodworks."** The wordmark in the logo art will need to be regenerated/updated to say "Kube Woodworks." Until that's done, either (a) use the K-mark alone (which has no text and is unaffected), or (b) flag the mismatch. Do not ship the old "Kube Creations" wordmark as the live brand name.
-
 ### Should the logo package be in this repo?
 
 **Yes — commit the logo files to the repo.** Reasons:
