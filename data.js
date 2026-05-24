@@ -35,7 +35,7 @@ var KUBE = {
     // 3. Copy the form ID from the form's dashboard (looks like: abc1234)
     // 4. Replace 'YOUR_FORM_ID' below with that ID
     // 5. Formspree will forward messages to the email you signed up with
-    formspreeId: 'YOUR_FORM_ID',
+    formspreeId: 'mykvdjrp',
   },
 
   /* ── Pieces ──────────────────────────────────────────────────
