@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catalogue — Kube Woodworks</title>
+  <meta name="description" content="Browse every piece Dave Kube has built — available and sold alike. Custom heirloom woodworking from Crofton, Nebraska.">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/k-mark-512.png">
+  <link rel="apple-touch-icon" href="assets/k-mark-512.png">
+  <link rel="manifest" href="assets/site.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="site-nav" aria-label="Site navigation">
+    <a class="nav-home" href="index.html" aria-label="Kube Woodworks home">
+      <img src="assets/k-mark-512.png" alt="">
+      <span class="nav-wordmark">Kube Woodworks</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="catalogue.html" aria-current="page">Catalogue</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Catalogue ── -->
+  <!-- Cards are built automatically from data.js — edit that file, not this one -->
+  <main class="catalogue-page">
+
+    <header class="catalogue-header">
+      <p class="page-eyebrow">All pieces</p>
+      <h1 class="page-title">Catalogue</h1>
+      <p class="catalogue-intro">Every piece Dave has built — available and sold alike.</p>
+    </header>
+
+    <div class="catalogue-grid" id="catalogue-grid">
+      <!-- Cards injected by JavaScript below -->
+    </div>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <a class="footer-logo" href="index.html" aria-label="Kube Woodworks">
+      <img src="assets/k-mark-512.png" alt="">
+    </a>
+    <p class="footer-copy">&copy; Kube Woodworks &mdash; Crofton, Nebraska</p>
+  </footer>
+
+  <script src="data.js"></script>
+  <script>
+    (function () {
+
+      function esc(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function buildCard(p) {
+        var photoHTML = p.photo
+          ? '<img src="' + esc(p.photo) + '" alt="' + esc(p.photoAlt || p.title) + '">'
+          : '<div class="card-photo-placeholder" aria-hidden="true">' +
+              '<img src="assets/k-mark-512.png" alt="">' +
+            '</div>';
+
+        var footerHTML = p.available
+          ? '<span class="avail-badge available">Available</span>' +
+            '<a href="contact.html" class="btn btn-sm">Contact Dave &rarr;</a>'
+          : '<span class="avail-badge unavailable">Not available</span>';
+
+        var article = document.createElement('article');
+        article.className = 'catalogue-card';
+        article.innerHTML =
+          '<div class="card-photo">' + photoHTML + '</div>' +
+          '<div class="card-body">' +
+            '<h2 class="card-title">' + esc(p.title) + '</h2>' +
+            '<dl class="card-meta">' +
+              '<dt>Wood</dt><dd>' + esc(p.wood) + '</dd>' +
+              '<dt>Dimensions</dt><dd>' + esc(p.dimensions) + '</dd>' +
+              '<dt>Finish</dt><dd>' + esc(p.finish) + '</dd>' +
+              '<dt>Year</dt><dd>' + esc(p.year) + '</dd>' +
+            '</dl>' +
+            '<p class="card-description">' + esc(p.description) + '</p>' +
+            '<div class="card-footer">' + footerHTML + '</div>' +
+          '</div>';
+        return article;
+      }
+
+      var grid = document.getElementById('catalogue-grid');
+      KUBE.pieces.forEach(function (p) {
+        grid.appendChild(buildCard(p));
+      });
+
+    }());
+  </script>
+
+</body>
+</html>

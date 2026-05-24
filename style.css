@@ -80,7 +80,7 @@ body {
 .nav-links {
   margin-left: auto;
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   list-style: none;
 }
 
@@ -493,6 +493,140 @@ body {
 .footer-copy {
   font-size: 0.75rem;
   color: var(--text-muted);
+}
+
+/* ── Catalogue — catalogue.html ─────────────────────────────── */
+
+.catalogue-page {
+  padding-top: var(--nav-h);
+}
+
+.catalogue-header {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 5vw, 2.5rem) 0;
+}
+
+.catalogue-intro {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  margin-top: -1.5rem;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+.catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px;
+  background: var(--divider);
+  margin-top: clamp(2rem, 5vw, 3rem);
+}
+
+.catalogue-card {
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.18s;
+}
+
+.catalogue-card:hover {
+  background: var(--surface-raised);
+}
+
+.card-photo {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+
+.card-photo-placeholder img {
+  height: 56px;
+  width: auto;
+  opacity: 0.14;
+  object-fit: contain;
+}
+
+.card-body {
+  padding: 1.25rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-title {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.card-meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.card-meta dt {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  align-self: baseline;
+  padding-top: 0.12em;
+}
+
+.card-meta dd {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+}
+
+.card-description {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--divider);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-sm {
+  padding: 0.45rem 1rem;
+  font-size: 0.7rem;
 }
 
 /* ── Responsive ──────────────────────────────────────────────── */
