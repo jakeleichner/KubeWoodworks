@@ -28,6 +28,14 @@ var KUBE = {
   contact: {
     phone: '(605) 660-7515',
     email: '[orders-email@example.com]',  // e.g. orders@kubewoodworks.com
+
+    // HOW TO SET UP THE CONTACT FORM:
+    // 1. Go to formspree.io and create a free account (free tier = 50 submissions/month)
+    // 2. Click "New Form", name it "Kube Woodworks"
+    // 3. Copy the form ID from the form's dashboard (looks like: abc1234)
+    // 4. Replace 'YOUR_FORM_ID' below with that ID
+    // 5. Formspree will forward messages to the email you signed up with
+    formspreeId: 'YOUR_FORM_ID',
   },
 
   /* ── Pieces ──────────────────────────────────────────────────

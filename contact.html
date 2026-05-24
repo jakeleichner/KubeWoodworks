@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact — Kube Woodworks</title>
-  <meta name="description" content="Get in touch with Dave Kube about available pieces, custom requests, or questions. Phone and email — no forms, no accounts.">
+  <meta name="description" content="Get in touch with Dave Kube about available pieces, custom requests, or questions.">
   <link rel="icon" type="image/png" sizes="512x512" href="assets/k-mark-512.png">
   <link rel="apple-touch-icon" href="assets/k-mark-512.png">
   <link rel="manifest" href="assets/site.webmanifest">
@@ -27,7 +27,6 @@
   </nav>
 
   <!-- ── Contact content ── -->
-  <!-- Phone and email are populated from data.js automatically -->
   <main class="content-page">
     <div class="content-inner">
 
@@ -35,11 +34,65 @@
       <h1 class="page-title">Contact Dave</h1>
 
       <p>
-        The best way to reach me is by phone or email. I don't have a
-        shopping cart or a checkout — if you want a piece, just get in
-        touch and we'll work it out from there.
+        Interested in a piece, have a question, or want to talk about a
+        custom size or wood species? Send a message and Dave will get back
+        to you directly.
       </p>
 
+      <!-- ── Contact form ── -->
+      <form class="contact-form" id="contact-form" novalidate>
+
+        <!-- Honeypot — hidden from real users, catches bots -->
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+        <input type="hidden" name="_subject" value="New inquiry — Kube Woodworks">
+
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label" for="field-name">
+              Name <span aria-hidden="true">*</span>
+            </label>
+            <input class="form-input" type="text" id="field-name" name="name"
+              required autocomplete="name" placeholder="Your name">
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="field-email">
+              Email <span aria-hidden="true">*</span>
+            </label>
+            <input class="form-input" type="email" id="field-email" name="email"
+              required autocomplete="email" placeholder="your@email.com">
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="field-phone">
+            Phone <span class="form-optional">(optional)</span>
+          </label>
+          <input class="form-input" type="tel" id="field-phone" name="phone"
+            autocomplete="tel" placeholder="(402) 000-0000">
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="field-message">
+            Message <span aria-hidden="true">*</span>
+          </label>
+          <textarea class="form-textarea" id="field-message" name="message"
+            required
+            placeholder="What are you interested in? If you have a custom size, wood species, or specific use in mind, include those details here."></textarea>
+        </div>
+
+        <button type="submit" class="btn form-submit" id="form-submit">
+          Send message &rarr;
+        </button>
+
+        <div class="form-status" id="form-status" role="alert" aria-live="polite"></div>
+
+      </form>
+
+      <!-- ── Divider ── -->
+      <div class="contact-divider">or reach Dave directly</div>
+
+      <!-- ── Direct contact ── -->
+      <!-- Phone and email are set in data.js -->
       <div class="contact-methods">
         <div class="contact-method">
           <span class="contact-label">Phone</span>
@@ -51,19 +104,6 @@
           <a class="contact-value" id="contact-email" href="#">&mdash;</a>
           <span class="contact-note">I check this regularly</span>
         </div>
-      </div>
-
-      <div class="inquiry-block">
-        <h2>Custom sizes or wood species?</h2>
-        <p>
-          If you're interested in a piece you saw here but want it in a
-          different size, a different wood, or have something else in mind
-          entirely — mention that when you reach out. I can't promise I'll
-          take every request, but I'm happy to talk it over. The more
-          detail you give me (dimensions, wood preference, how you plan to
-          use it), the better I can tell you whether it's something I'd
-          build.
-        </p>
       </div>
 
       <h2>A few things to know</h2>
@@ -88,16 +128,64 @@
 
   <script src="data.js"></script>
   <script>
+    /* ── Populate phone / email from data.js ── */
     var phoneEl = document.getElementById('contact-phone');
     var emailEl = document.getElementById('contact-email');
-    var phone   = KUBE.contact.phone;
-    var email   = KUBE.contact.email;
+    phoneEl.textContent = KUBE.contact.phone;
+    phoneEl.href        = 'tel:' + KUBE.contact.phone.replace(/\D/g, '');
+    emailEl.textContent = KUBE.contact.email;
+    emailEl.href        = 'mailto:' + KUBE.contact.email;
 
-    phoneEl.textContent = phone;
-    phoneEl.href        = 'tel:' + phone.replace(/\D/g, '');
+    /* ── Contact form ── */
+    var form   = document.getElementById('contact-form');
+    var btn    = document.getElementById('form-submit');
+    var status = document.getElementById('form-status');
 
-    emailEl.textContent = email;
-    emailEl.href        = 'mailto:' + email;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Basic validation
+      var name    = form.querySelector('[name="name"]').value.trim();
+      var email   = form.querySelector('[name="email"]').value.trim();
+      var message = form.querySelector('[name="message"]').value.trim();
+
+      if (!name || !email || !message) {
+        status.className   = 'form-status error';
+        status.textContent = 'Please fill in your name, email, and message.';
+        return;
+      }
+
+      btn.textContent = 'Sending…';
+      btn.disabled    = true;
+      status.className   = 'form-status';
+      status.textContent = '';
+
+      fetch('https://formspree.io/f/' + KUBE.contact.formspreeId, {
+        method:  'POST',
+        body:    new FormData(form),
+        headers: { 'Accept': 'application/json' },
+      })
+      .then(function (res) {
+        if (res.ok) {
+          form.reset();
+          status.className   = 'form-status success';
+          status.textContent = 'Message sent — Dave will be in touch soon.';
+        } else {
+          return res.json().then(function (data) {
+            var msg = (data.errors || []).map(function (err) { return err.message; }).join(', ');
+            throw new Error(msg || 'Submission failed');
+          });
+        }
+      })
+      .catch(function () {
+        status.className   = 'form-status error';
+        status.textContent = 'Something went wrong — please email Dave directly at ' + KUBE.contact.email;
+      })
+      .finally(function () {
+        btn.textContent = 'Send message →';
+        btn.disabled    = false;
+      });
+    });
   </script>
 
 </body>
