@@ -129,38 +129,50 @@
   <script src="data.js"></script>
   <script>
     /* ── Populate phone / email from data.js ── */
-    var phoneEl = document.getElementById('contact-phone');
-    var emailEl = document.getElementById('contact-email');
-    phoneEl.textContent = KUBE.contact.phone;
-    phoneEl.href        = 'tel:' + KUBE.contact.phone.replace(/\D/g, '');
-    emailEl.textContent = KUBE.contact.email;
-    emailEl.href        = 'mailto:' + KUBE.contact.email;
+    try {
+      var phoneEl = document.getElementById('contact-phone');
+      var emailEl = document.getElementById('contact-email');
+      phoneEl.textContent = KUBE.contact.phone;
+      phoneEl.href        = 'tel:' + KUBE.contact.phone.replace(/\D/g, '');
+      emailEl.textContent = KUBE.contact.email;
+      emailEl.href        = 'mailto:' + KUBE.contact.email;
+    } catch (e) { /* data.js not loaded yet — placeholders stay */ }
 
     /* ── Contact form ── */
-    var form   = document.getElementById('contact-form');
-    var btn    = document.getElementById('form-submit');
-    var status = document.getElementById('form-status');
+    var form      = document.getElementById('contact-form');
+    var btn       = document.getElementById('form-submit');
+    var statusEl  = document.getElementById('form-status');
+    var fallbackEmail = (typeof KUBE !== 'undefined') ? KUBE.contact.email : '';
+    var endpoint  = 'https://formspree.io/f/' +
+                    ((typeof KUBE !== 'undefined') ? KUBE.contact.formspreeId : '');
+
+    /* Set form action as fallback in case JS fetch fails */
+    form.setAttribute('action', endpoint);
+    form.setAttribute('method', 'POST');
+
+    function showStatus(type, msg) {
+      statusEl.className   = 'form-status ' + type;
+      statusEl.textContent = msg;
+      statusEl.style.display = 'block';
+    }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      // Basic validation
       var name    = form.querySelector('[name="name"]').value.trim();
       var email   = form.querySelector('[name="email"]').value.trim();
       var message = form.querySelector('[name="message"]').value.trim();
 
       if (!name || !email || !message) {
-        status.className   = 'form-status error';
-        status.textContent = 'Please fill in your name, email, and message.';
+        showStatus('error', 'Please fill in your name, email, and message.');
         return;
       }
 
       btn.textContent = 'Sending…';
       btn.disabled    = true;
-      status.className   = 'form-status';
-      status.textContent = '';
+      statusEl.style.display = 'none';
 
-      fetch('https://formspree.io/f/' + KUBE.contact.formspreeId, {
+      fetch(endpoint, {
         method:  'POST',
         body:    new FormData(form),
         headers: { 'Accept': 'application/json' },
@@ -168,20 +180,22 @@
       .then(function (res) {
         if (res.ok) {
           form.reset();
-          status.className   = 'form-status success';
-          status.textContent = 'Message sent — Dave will be in touch soon.';
+          showStatus('success', 'Message sent — Dave will be in touch soon.');
         } else {
           return res.json().then(function (data) {
-            var msg = (data.errors || []).map(function (err) { return err.message; }).join(', ');
-            throw new Error(msg || 'Submission failed');
+            var msg = (data.errors || []).map(function (err) { return err.message; }).join(' ');
+            throw new Error(msg || 'Submission failed (status ' + res.status + ')');
           });
         }
       })
-      .catch(function () {
-        status.className   = 'form-status error';
-        status.textContent = 'Something went wrong — please email Dave directly at ' + KUBE.contact.email;
+      .catch(function (err) {
+        var detail = err && err.message ? ' (' + err.message + ')' : '';
+        showStatus('error',
+          'Something went wrong' + detail + '. Please email Dave directly' +
+          (fallbackEmail ? ' at ' + fallbackEmail : '') + '.'
+        );
       })
-      .finally(function () {
+      .then(function () {
         btn.textContent = 'Send message →';
         btn.disabled    = false;
       });
