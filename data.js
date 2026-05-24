@@ -26,7 +26,7 @@ var KUBE = {
 
   /* ── Contact info ─────────────────────────────────────────── */
   contact: {
-    phone: '[phone number]',           // e.g. (402) 555-0123
+    phone: '(605) 660-7515',
     email: '[orders-email@example.com]',  // e.g. orders@kubewoodworks.com
   },
 
