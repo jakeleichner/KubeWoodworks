@@ -25,92 +25,9 @@
   </nav>
 
   <!-- ── Gallery ── -->
+  <!-- Pieces are built automatically from data.js — edit that file, not this one -->
   <main class="gallery-stage" id="gallery">
 
-    <!-- ============================================================
-         HOW TO ADD A NEW PIECE
-         ============================================================
-         1. Take your photos and drop them in the /images/ folder.
-            Name the file something like "walnut-coffee-table.jpg".
-
-         2. Copy EVERYTHING between "BEGIN PIECE" and "END PIECE"
-            (including those comment lines).
-
-         3. Paste the copy right BEFORE the last "END PIECE" comment
-            — so it appears after the previous piece, not after the
-            closing </main> tag.
-
-         4. Update the following in your pasted block:
-              - The "No. 001" → next number (002, 003, …)
-              - piece-title text
-              - piece-meta values (Wood, Dimensions, Finish, Year)
-              - piece-description text
-              - The <img> tag: swap the placeholder div for a real
-                <img src="images/your-file.jpg" alt="brief description">
-              - Availability: see the comment inside for how to
-                toggle between Available and Not available.
-
-         Dave — you never need to touch anything outside these blocks.
-         ============================================================ -->
-
-    <!-- BEGIN PIECE -->
-    <article class="piece" data-piece aria-label="Piece 1">
-      <div class="piece-photo">
-        <!--
-          PHOTO: Replace this placeholder block with your image when ready:
-
-          <img src="images/your-photo-filename.jpg"
-               alt="Short description of the piece — e.g. Walnut end table with dovetail joinery">
-
-          The photo will fill this panel automatically. Portrait or landscape both work.
-        -->
-        <div class="piece-photo-placeholder" aria-hidden="true">
-          <img src="assets/k-mark-512.png" alt="">
-          <p>Photo coming soon</p>
-        </div>
-      </div>
-      <div class="piece-placard">
-        <p class="piece-number">No. 001</p>
-        <h1 class="piece-title">Walnut End Table</h1>
-        <dl class="piece-meta">
-          <dt>Wood</dt>        <dd>Black Walnut</dd>
-          <dt>Dimensions</dt>  <dd>24&Prime; &times; 18&Prime; &times; 24&Prime;</dd>
-          <dt>Finish</dt>      <dd>Rubio Monocoat</dd>
-          <dt>Year</dt>        <dd>2025</dd>
-        </dl>
-        <p class="piece-description">
-          Solid walnut end table with hand-cut dovetail joinery at the apron corners
-          and a single lower shelf in figured maple. Built to be used every day
-          and handed down.
-        </p>
-        <div class="piece-availability">
-          <!--
-            AVAILABLE: use this block when the piece is for sale
-          -->
-          <span class="avail-badge available">Available</span>
-          <p class="avail-message">
-            Ready for local pickup in Crofton, NE.
-            Cash, check, or Venmo. No shipping — regional sales only.
-          </p>
-          <a href="contact.html" class="btn">Contact Dave to arrange &rarr;</a>
-
-          <!--
-            NOT AVAILABLE: swap to this block when a piece is sold
-            (remove the three lines above and uncomment the three below)
-
-          <span class="avail-badge unavailable">Not available</span>
-          <p class="avail-message">
-            Not currently in stock — contact Dave for an estimate on when
-            a similar piece could be ready.
-          </p>
-          <a href="contact.html" class="btn">Inquire &rarr;</a>
-          -->
-        </div>
-      </div>
-    </article>
-    <!-- END PIECE -->
-
-    <!-- Gallery navigation controls -->
     <div class="gallery-controls" aria-label="Gallery navigation">
       <button class="gallery-btn" id="prev-btn" aria-label="Previous piece" disabled>&#8592;</button>
       <span class="gallery-counter" aria-live="polite">
@@ -121,14 +38,72 @@
 
   </main>
 
+  <script src="data.js"></script>
   <script>
     (function () {
-      const pieces  = Array.from(document.querySelectorAll('[data-piece]'));
-      const btnPrev = document.getElementById('prev-btn');
-      const btnNext = document.getElementById('next-btn');
-      const numCur  = document.getElementById('count-current');
-      const numTot  = document.getElementById('count-total');
-      let current   = 0;
+
+      function esc(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function buildPiece(p, index) {
+        var num = String(index + 1).padStart(3, '0');
+
+        var photoHTML = p.photo
+          ? '<img src="' + esc(p.photo) + '" alt="' + esc(p.photoAlt || p.title) + '">'
+          : '<div class="piece-photo-placeholder" aria-hidden="true">' +
+              '<img src="assets/k-mark-512.png" alt="">' +
+              '<p>Photo coming soon</p>' +
+            '</div>';
+
+        var availHTML = p.available
+          ? '<span class="avail-badge available">Available</span>' +
+            '<p class="avail-message">Ready for local pickup in Crofton, NE. Cash, check, or Venmo. No shipping — regional sales only.</p>' +
+            '<a href="contact.html" class="btn">Contact Dave to arrange →</a>'
+          : '<span class="avail-badge unavailable">Not available</span>' +
+            '<p class="avail-message">Not currently in stock — contact Dave for an estimate on when a similar piece could be ready.</p>' +
+            '<a href="contact.html" class="btn">Inquire →</a>';
+
+        var article = document.createElement('article');
+        article.className = 'piece';
+        article.setAttribute('data-piece', '');
+        article.setAttribute('aria-label', 'Piece ' + (index + 1));
+        article.innerHTML =
+          '<div class="piece-photo">' + photoHTML + '</div>' +
+          '<div class="piece-placard">' +
+            '<p class="piece-number">No. ' + num + '</p>' +
+            '<h1 class="piece-title">' + esc(p.title) + '</h1>' +
+            '<dl class="piece-meta">' +
+              '<dt>Wood</dt><dd>' + esc(p.wood) + '</dd>' +
+              '<dt>Dimensions</dt><dd>' + esc(p.dimensions) + '</dd>' +
+              '<dt>Finish</dt><dd>' + esc(p.finish) + '</dd>' +
+              '<dt>Year</dt><dd>' + esc(p.year) + '</dd>' +
+            '</dl>' +
+            '<p class="piece-description">' + esc(p.description) + '</p>' +
+            '<div class="piece-availability">' + availHTML + '</div>' +
+          '</div>';
+        return article;
+      }
+
+      var stage    = document.getElementById('gallery');
+      var controls = document.querySelector('.gallery-controls');
+      var btnPrev  = document.getElementById('prev-btn');
+      var btnNext  = document.getElementById('next-btn');
+      var numCur   = document.getElementById('count-current');
+      var numTot   = document.getElementById('count-total');
+      var current  = 0;
+      var pieces   = [];
+
+      // Build pieces from data.js
+      KUBE.pieces.forEach(function (p, i) {
+        var el = buildPiece(p, i);
+        stage.insertBefore(el, controls);
+        pieces.push(el);
+      });
 
       numTot.textContent = pieces.length;
 
@@ -136,29 +111,27 @@
         pieces[current].classList.remove('active');
         current = idx;
         pieces[current].classList.add('active');
-        numCur.textContent   = current + 1;
-        btnPrev.disabled     = current === 0;
-        btnNext.disabled     = current === pieces.length - 1;
-        // Scroll placard back to top on each new piece
-        const placard = pieces[current].querySelector('.piece-placard');
+        numCur.textContent = current + 1;
+        btnPrev.disabled   = current === 0;
+        btnNext.disabled   = current === pieces.length - 1;
+        var placard = pieces[current].querySelector('.piece-placard');
         if (placard) placard.scrollTop = 0;
       }
 
-      // Initialise first piece
-      pieces[0].classList.add('active');
-      btnPrev.disabled = true;
-      btnNext.disabled = pieces.length < 2;
+      if (pieces.length > 0) {
+        pieces[0].classList.add('active');
+        btnPrev.disabled = true;
+        btnNext.disabled = pieces.length < 2;
+      }
 
       btnPrev.addEventListener('click', function () { if (current > 0) show(current - 1); });
       btnNext.addEventListener('click', function () { if (current < pieces.length - 1) show(current + 1); });
 
-      // Keyboard navigation
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowLeft'  && current > 0)                show(current - 1);
+        if (e.key === 'ArrowLeft'  && current > 0)                 show(current - 1);
         if (e.key === 'ArrowRight' && current < pieces.length - 1) show(current + 1);
       });
 
-      // Touch / swipe
       var touchStartX = 0;
       document.addEventListener('touchstart', function (e) {
         touchStartX = e.touches[0].clientX;
@@ -170,6 +143,7 @@
           if (dx > 0 && current > 0)                 show(current - 1);
         }
       }, { passive: true });
+
     }());
   </script>
 

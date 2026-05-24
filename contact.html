@@ -25,6 +25,7 @@
   </nav>
 
   <!-- ── Contact content ── -->
+  <!-- Phone and email are populated from data.js automatically -->
   <main class="content-page">
     <div class="content-inner">
 
@@ -37,30 +38,19 @@
         touch and we'll work it out from there.
       </p>
 
-      <!-- Contact methods -->
       <div class="contact-methods">
         <div class="contact-method">
           <span class="contact-label">Phone</span>
-          <!--
-            Replace [phone number] with Dave's actual number, e.g.:
-            <a class="contact-value" href="tel:+14025550123">(402) 555-0123</a>
-          -->
-          <a class="contact-value" href="tel:[(605) 660-7515]">[(605) 660-7515]</a>
+          <a class="contact-value" id="contact-phone" href="#">&mdash;</a>
           <span class="contact-note">Call or text — either works</span>
         </div>
-
         <div class="contact-method">
           <span class="contact-label">Email</span>
-          <!--
-            Replace [orders-email@example.com] with Dave's actual orders email, e.g.:
-            <a class="contact-value" href="mailto:orders@kubewoodworks.com">orders@kubewoodworks.com</a>
-          -->
-          <a class="contact-value" href="mailto:[orders-email@example.com]">[orders-email@example.com]</a>
+          <a class="contact-value" id="contact-email" href="#">&mdash;</a>
           <span class="contact-note">I check this regularly</span>
         </div>
       </div>
 
-      <!-- Custom / inquiry note -->
       <div class="inquiry-block">
         <h2>Custom sizes or wood species?</h2>
         <p>
@@ -93,6 +83,20 @@
     </a>
     <p class="footer-copy">&copy; Kube Woodworks &mdash; Crofton, Nebraska</p>
   </footer>
+
+  <script src="data.js"></script>
+  <script>
+    var phoneEl = document.getElementById('contact-phone');
+    var emailEl = document.getElementById('contact-email');
+    var phone   = KUBE.contact.phone;
+    var email   = KUBE.contact.email;
+
+    phoneEl.textContent = phone;
+    phoneEl.href        = 'tel:' + phone.replace(/\D/g, '');
+
+    emailEl.textContent = email;
+    emailEl.href        = 'mailto:' + email;
+  </script>
 
 </body>
 </html>
