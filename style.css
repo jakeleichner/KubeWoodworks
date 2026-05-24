@@ -464,6 +464,129 @@ body {
   text-underline-offset: 3px;
 }
 
+/* ── Contact form ────────────────────────────────────────────── */
+
+.contact-form {
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1.5rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.1rem;
+}
+
+.form-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.form-optional {
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.form-input,
+.form-textarea {
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  color: var(--text);
+  padding: 0.7rem 0.875rem;
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.18s;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: var(--text-muted);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+.form-submit {
+  width: 100%;
+  margin-top: 0.25rem;
+  justify-content: center;
+}
+
+.form-submit:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.form-status {
+  margin-top: 1rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  display: none;
+}
+
+.form-status.success {
+  display: block;
+  border: 1px solid var(--green);
+  color: var(--green);
+}
+
+.form-status.error {
+  display: block;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.contact-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.contact-divider::before,
+.contact-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--divider);
+}
+
+@media (max-width: 520px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── Footer ──────────────────────────────────────────────────── */
 
 .site-footer {
