@@ -495,19 +495,19 @@ body {
   color: var(--text-muted);
 }
 
-/* ── Catalogue — catalogue.html ─────────────────────────────── */
+/* ── Catalog — catalog.html ─────────────────────────────── */
 
-.catalogue-page {
+.catalog-page {
   padding-top: var(--nav-h);
 }
 
-.catalogue-header {
+.catalog-header {
   max-width: 700px;
   margin: 0 auto;
   padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 5vw, 2.5rem) 0;
 }
 
-.catalogue-intro {
+.catalog-intro {
   font-size: 0.9375rem;
   color: var(--text-muted);
   margin-top: -1.5rem;
@@ -515,7 +515,7 @@ body {
   line-height: 1.6;
 }
 
-.catalogue-grid {
+.catalog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1px;
@@ -523,14 +523,14 @@ body {
   margin-top: clamp(2rem, 5vw, 3rem);
 }
 
-.catalogue-card {
+.catalog-card {
   background: var(--surface);
   display: flex;
   flex-direction: column;
   transition: background 0.18s;
 }
 
-.catalogue-card:hover {
+.catalog-card:hover {
   background: var(--surface-raised);
 }
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catalogue — Kube Woodworks</title>
+  <title>Catalog — Kube Woodworks</title>
   <meta name="description" content="Browse every piece Dave Kube has built — available and sold alike. Custom heirloom woodworking from Crofton, Nebraska.">
   <link rel="icon" type="image/png" sizes="512x512" href="assets/k-mark-512.png">
   <link rel="apple-touch-icon" href="assets/k-mark-512.png">
@@ -20,23 +20,23 @@
     </a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="catalogue.html" aria-current="page">Catalogue</a></li>
+      <li><a href="catalog.html" aria-current="page">Catalog</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
 
-  <!-- ── Catalogue ── -->
+  <!-- ── Catalog ── -->
   <!-- Cards are built automatically from data.js — edit that file, not this one -->
-  <main class="catalogue-page">
+  <main class="catalog-page">
 
-    <header class="catalogue-header">
+    <header class="catalog-header">
       <p class="page-eyebrow">All pieces</p>
-      <h1 class="page-title">Catalogue</h1>
-      <p class="catalogue-intro">Every piece Dave has built — available and sold alike.</p>
+      <h1 class="page-title">Catalog</h1>
+      <p class="catalog-intro">Every piece Dave has built — available and sold alike.</p>
     </header>
 
-    <div class="catalogue-grid" id="catalogue-grid">
+    <div class="catalog-grid" id="catalog-grid">
       <!-- Cards injected by JavaScript below -->
     </div>
 
@@ -75,7 +75,7 @@
           : '<span class="avail-badge unavailable">Not available</span>';
 
         var article = document.createElement('article');
-        article.className = 'catalogue-card';
+        article.className = 'catalog-card';
         article.innerHTML =
           '<div class="card-photo">' + photoHTML + '</div>' +
           '<div class="card-body">' +
@@ -92,7 +92,7 @@
         return article;
       }
 
-      var grid = document.getElementById('catalogue-grid');
+      var grid = document.getElementById('catalog-grid');
       KUBE.pieces.forEach(function (p) {
         grid.appendChild(buildCard(p));
       });
